@@ -1,0 +1,30 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+.table-container{
+    margin-top: 20px;
+}
+span.page {
+    color: #2271b1;
+    font-size: 16px;
+    letter-spacing: 1.3px;
+}
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 400;
+    color: #3b3b3b;
+    background: #fff;
+} 
+table{
+     min-width: 50%;
+}
+table th{
+    text-align: left !important;
+    padding-right: 20px !important;
+}
+select {
+    width: 53px;
+}
