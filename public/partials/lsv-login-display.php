@@ -14,11 +14,10 @@ if(isset($_SESSION['lsvuid'])){
     ?>
     <div class="loginexist">
         <h3>You are already logged in.</h3>
-        <p><a href="<?php echo esc_url(home_url()); ?>">Go back</a></p>
+        <p><a href="<?php echo esc_url(home_url()); ?>">Go home</a></p>
         <p><a class="logoutbtn" href="?logout=true">Log out</a></p>
     </div>
     <?php
-    //wp_safe_redirect( home_url('/') );
 }else{
 
     require_once LSV_PATH."public/class-lsv-login-public.php";
@@ -36,21 +35,21 @@ if(isset($_SESSION['lsvuid'])){
     <div class="wrapper" style="background-image: linear-gradient(45deg, #292929, #f19d4947),url(<?php echo get_option('lsvbackground_img'); ?>)">
     <div class="container">
         <div class="login-form">
-            <h2>Login</h2>
+            <h2>Login to Watch</h2>
             <form>
                 <p>
                     <label for="email">Your email</label>
                     <input id="email" type="email" placeholder="Email" required>
                 </p>
                 <p>
-                    <label for="Participants">Participants number</label>
-                    <input id="participants" type="number" class="participants" placeholder="Number of people watching with you." required>
+                    <label for="Participants">No of Watching with you</label>
+                    <input id="participants" type="number" class="participants" placeholder="Number" required>
                 </p>
                 <p class="signinbtn">
-                    <input id="signinbtn" class="btn" type="submit" value="Sing In" />
+                    <input id="signinbtn" class="btn" type="submit" value="Watch Now" />
                 </p>
                 <p>
-                    <a href="<?php echo home_url($public_ins->get_post_slug(get_option( "lsvregister_page", true ))); ?>">Create an account.</a>
+                    <a href="<?php echo home_url($public_ins->get_post_slug(get_option( "lsvregister_page", true ))); ?>">Register to Watch.</a>
                 </p>
             </form>
             <!-- login end -->

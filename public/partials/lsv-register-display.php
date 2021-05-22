@@ -15,11 +15,10 @@ if(isset($_SESSION['lsvuid'])){
     ?>
     <div class="loginexist">
         <h3>You are already logged in.</h3>
-        <p><a href="<?php echo esc_url(home_url()); ?>">Go back</a></p>
+        <p><a href="<?php echo esc_url(home_url()); ?>">Go home</a></p>
         <p><a class="logoutbtn" href="?logout=true">Log out</a></p>
     </div>
     <?php
-    //wp_safe_redirect( home_url('/') );
 }else{
   require_once LSV_PATH."public/class-lsv-login-public.php";
   class Register_Page_View extends Lsv_Login_Public{
@@ -175,7 +174,7 @@ if(isset($_SESSION['lsvuid'])){
                 <option value="Ireland">Ireland</option>
                 <option value="Isle of Man">Isle of Man</option>
                 <option value="Israel">Israel</option>
-                <option selected value="Italy">Italy</option>
+                <option value="Italy">Italy</option>
                 <option value="Jamaica">Jamaica</option>
                 <option value="Japan">Japan</option>
                 <option value="Jordan">Jordan</option>
@@ -297,7 +296,7 @@ if(isset($_SESSION['lsvuid'])){
                 <option value="Turks & Caicos Is">Turks & Caicos Is</option>
                 <option value="Tuvalu">Tuvalu</option>
                 <option value="Uganda">Uganda</option>
-                <option value="United Kingdom">United Kingdom</option>
+                <option selected value="United Kingdom">United Kingdom</option>
                 <option value="Ukraine">Ukraine</option>
                 <option value="United Arab Erimates">United Arab Emirates</option>
                 <option value="United States of America">United States of America</option>

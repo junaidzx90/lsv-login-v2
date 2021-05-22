@@ -82,18 +82,6 @@ jQuery(function( $ ) {
 			return false;
 		}
 
-		if (phone == "") {
-			$('#phone').css('border-color', 'red');
-			errorsshow('Phone number required');
-			return false;
-		}
-		
-		if (phone.length < 10) {
-			$('#phone').css('border-color', 'red');
-			errorsshow('Phone number requires 10 characters');
-			return false;
-		}
-
 		if (country == "") {
 			$('#country').css('border-color', 'red');
 			errorsshow('Country is required');

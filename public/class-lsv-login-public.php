@@ -71,7 +71,7 @@ class Lsv_Login_Public {
 	function restrict_targeted_page(){
 		$actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
-		if($actual_link === get_option( "lsvredirect_after_login" )){
+		if($actual_link === home_url( $this->get_post_slug(get_option( 'lsvredirect_after_login' )) )){
 			if(!isset($_SESSION['lsvuid'])){
 				wp_safe_redirect( home_url( '/404' ) );
 			}
@@ -92,8 +92,8 @@ class Lsv_Login_Public {
 	function lsv_locked_page_design(){
 		if(isset($_SESSION['lsvuid'])){
 			ob_start();
-			global $wpdb;
-			$user_id = isset($_SESSION['lsvuid']);
+			global $wpdb,$post;
+			$user_id = isset($_SESSION['lsvuid'])?$_SESSION['lsvuid']:0;
 			$getuserdata = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}lsv_user WHERE ID = $user_id");
 
 			$output = '';
@@ -108,9 +108,8 @@ class Lsv_Login_Public {
 			$output .= '</div>';
 			$output .= '</div>';
 			$output .= '</section>';
-
-			$output .= ob_get_clean();
-			return $output;
+			echo $output;
+			return ob_get_clean();
 		}else{
 			wp_safe_redirect( home_url($this->get_post_slug(get_option( "lsvlogin_page" ))) );
 		}
@@ -127,8 +126,8 @@ class Lsv_Login_Public {
 		if(is_page($this->get_post_slug(get_option( "lsvregister_page"))) || is_page( 'post' )){
 			wp_enqueue_style( $this->plugin_name.'_register', plugin_dir_url( __FILE__ ) . 'css/lsv-register-display.css', array(), microtime(), 'all' );
 		}
-		$actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-		if($actual_link === get_option( "lsvredirect_after_login" )){
+		
+		if(is_page($this->get_post_slug(get_option( 'lsvredirect_after_login' )))){
 			wp_enqueue_style( 'target-page'.'_register', plugin_dir_url( __FILE__ ) . 'css/target-page.css', array(), microtime(), 'all' );
 		}
 	}
@@ -279,7 +278,7 @@ class Lsv_Login_Public {
 				if($logsadd){
 					$_SESSION['lsvuid'] = $myaccess;
 					if(isset($_SESSION['lsvuid'])){
-						echo json_encode(array("success" => get_option( "lsvredirect_after_login" )));
+						echo json_encode(array("success" => home_url($this->get_post_slug(get_option( "lsvredirect_after_login" ))) ));
 						die;
 					}
 				}

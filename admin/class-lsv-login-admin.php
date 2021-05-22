@@ -93,12 +93,12 @@ class Lsv_Login_Admin {
         register_setting('lsvplugin_settings', 'lsvregister_page');
 
 		// Logo Url
-        add_settings_field('my_logo_url', 'Logo URL', array($this, 'my_logo_url_cb'), 'lsvplugin_settings_page', 'lsvplugin_settings');
-        register_setting('lsvplugin_settings', 'my_logo_url');
+        add_settings_field('lsvredirect_after_login', 'Secure page <span class="page">[lsv_locked_page]</span>', array($this, 'lsvredirect_after_login_cb'), 'lsvplugin_settings_page', 'lsvplugin_settings');
+        register_setting('lsvplugin_settings', 'lsvredirect_after_login');
 
 		// Logo Url
-        add_settings_field('lsvredirect_after_login', 'Redirect after login <span class="page">[lsv_locked_page]</span>', array($this, 'lsvredirect_after_login_cb'), 'lsvplugin_settings_page', 'lsvplugin_settings');
-        register_setting('lsvplugin_settings', 'lsvredirect_after_login');
+        add_settings_field('my_logo_url', 'Logo URL', array($this, 'my_logo_url_cb'), 'lsvplugin_settings_page', 'lsvplugin_settings');
+        register_setting('lsvplugin_settings', 'my_logo_url');
 
 		// Background Image
         add_settings_field('lsvbackground_img', 'Background Image', array($this, 'lsvbackground_img_cb'), 'lsvplugin_settings_page', 'lsvplugin_settings');
@@ -166,10 +166,25 @@ class Lsv_Login_Admin {
         wp_dropdown_pages($args);
         echo '<br>';
     }
+	// Redirect after login
+	function lsvredirect_after_login_cb(){
+		global $wp_query;
+        $args = array(
+            'post_type' => 'page',
+            'post_status' => 'publish',
+            'name' => 'lsvredirect_after_login',
+            'class' => 'widefat',
+            'selected' => get_option('lsvredirect_after_login'),
+            'show_option_none' => '',
+            'show_option_no_change' => 'Select Page',
+            'option_none_value' => '',
+        );
+        wp_dropdown_pages($args);
+	}
 
 	// Background Image
 	function my_logo_url_cb(){
-		echo '<input type="url" class="widefat" name="my_logo_url" value="'.get_option('my_logo_url').'" placeholder="Logo url">';
+		echo '<p></p><input type="url" class="widefat" name="my_logo_url" value="'.get_option('my_logo_url').'" placeholder="Logo url">';
 	}
 	// Background Image
 	function lsvbackground_img_cb(){
@@ -183,9 +198,6 @@ class Lsv_Login_Admin {
 	function lsvregister_info_txt_cb(){
 		echo '<textarea placeholder="Long texts" name="lsvregister_info_txt" id="lsvregister_info_txt" class="widefat">'.get_option('lsvregister_info_txt').'</textarea>';
 	}
-	// Redirect after login
-	function lsvredirect_after_login_cb(){
-		echo '<input type="url" class="widefat" name="lsvredirect_after_login" value="'.get_option('lsvredirect_after_login').'" placeholder="Redirect url">';
-	}
+	
 
 }
