@@ -97,7 +97,7 @@ class Lsv_Login_Admin {
         register_setting('lsvplugin_settings', 'my_logo_url');
 
 		// Logo Url
-        add_settings_field('lsvredirect_after_login', 'Redirect after login', array($this, 'lsvredirect_after_login_cb'), 'lsvplugin_settings_page', 'lsvplugin_settings');
+        add_settings_field('lsvredirect_after_login', 'Redirect after login <span class="page">[lsv_locked_page]</span>', array($this, 'lsvredirect_after_login_cb'), 'lsvplugin_settings_page', 'lsvplugin_settings');
         register_setting('lsvplugin_settings', 'lsvredirect_after_login');
 
 		// Background Image
@@ -117,6 +117,7 @@ class Lsv_Login_Admin {
 	function lsvplugin_menupage_display(){
 		echo '<h1>LSV Plugin setting</h1>';
 		echo '<hr>';
+		echo '<p>All pages are expected full width.</p>';
 
 		echo '<form action="options.php" method="post" id="er_settings">';
 		echo '<table>';

@@ -24,7 +24,7 @@
  * Text Domain:       lsv-login
  * Domain Path:       /languages
  */
-
+if (!isset($_SESSION)) session_start();
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;

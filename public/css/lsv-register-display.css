@@ -42,7 +42,17 @@ body {
   border-radius: 5px;
   margin: 50px 0px;
 }
-
+.loginexist {
+  width: 100%;
+  height: 100vh;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.logoutbtn{
+  color: #f14949;
+}
 /* * * * * Login Form CSS * * * * */
 h2 {
   margin: 0 0 15px 0;

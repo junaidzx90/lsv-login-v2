@@ -22,14 +22,14 @@
             <th>Email</th>
             <th>Phone</th>
             <th>Login Date</th>
-            <th>Total Logins</th>
+            <th>Total Attendance</th>
             <th>Country</th>
         </tr>
     </thead>
     <tbody>
         <?php
         global $wpdb;
-        $logs = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}lsv_logs GROUP BY user_id ORDER BY ID DESC");
+        $logs = $wpdb->get_results("SELECT u.*,l.* FROM {$wpdb->prefix}lsv_user u, {$wpdb->prefix}lsv_logs l WHERE u.ID = l.user_id ORDER BY l.logindate DESC");
         if(!empty($logs)){
             foreach($logs as $log){
                 ?>
@@ -39,9 +39,7 @@
                     <td><?php echo _e($log->email); ?></td>
                     <td><?php echo _e($log->phone); ?></td>
                     <td><?php echo _e($log->logindate); ?></td>
-                    <td><?php 
-                        echo $wpdb->query("SELECT * FROM {$wpdb->prefix}lsv_logs WHERE user_id = {$log->user_id} AND logindate LIKE '%{$log->logindate}'");
-                    ?></td>
+                    <td><?php echo _e($log->watching_num); ?></td>
                     <td><?php echo _e($log->country); ?></td>
                 </tr>
                 <?php

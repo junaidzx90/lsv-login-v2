@@ -178,6 +178,11 @@ class Lsv_Login {
 		$this->loader->add_action("wp_ajax_lsv_email_check", $plugin_public, "lsv_email_check");
     	$this->loader->add_action("wp_ajax_nopriv_lsv_email_check", $plugin_public, "lsv_email_check");
 
+		// restrict_targeted_page
+    	$this->loader->add_action("template_redirect", $plugin_public, "restrict_targeted_page");
+		// Lsv logout
+    	$this->loader->add_action("init", $plugin_public, "lsv_logout");
+
 		// Registrations
 		$this->loader->add_action("wp_ajax_lsv_registration_process", $plugin_public, "lsv_registration_process");
     	$this->loader->add_action("wp_ajax_nopriv_lsv_registration_process", $plugin_public, "lsv_registration_process");

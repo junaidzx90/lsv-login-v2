@@ -60,8 +60,61 @@ class Lsv_Login_Public {
 				add_shortcode( 'lsv_registration', [$this,'lsv_registration_template_display'] );
 			}
 		}
+
+		if(get_option( 'lsvredirect_after_login' )){
+			// headerr shortcode
+			add_shortcode( 'lsv_locked_page', [$this,'lsv_locked_page_design'] );
+		}
 	}
 
+	// Denied access without logon
+	function restrict_targeted_page(){
+		$actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
+		if($actual_link === get_option( "lsvredirect_after_login" )){
+			if(!isset($_SESSION['lsvuid'])){
+				wp_safe_redirect( home_url( '/404' ) );
+			}
+		}
+	}
+
+	// LSV Logout
+	function lsv_logout(){
+		if(isset($_GET['logout'])){
+			if($_GET['logout'] == 'true'){
+				unset($_SESSION['lsvuid']);
+				wp_safe_redirect( home_url($this->get_post_slug(get_option( "lsvlogin_page" ))) );
+			}
+		}
+	}
+
+	// Make username view
+	function lsv_locked_page_design(){
+		if(isset($_SESSION['lsvuid'])){
+			ob_start();
+			global $wpdb;
+			$user_id = isset($_SESSION['lsvuid']);
+			$getuserdata = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}lsv_user WHERE ID = $user_id");
+
+			$output = '';
+
+			$output .= '<section>';
+			$output .= '<div class="navabr">';
+			$output .= '<div class="navcontent">';
+			$output .= '<div class="lsvuser">';
+			$output .= '<h5 class="name">'.__(ucfirst($getuserdata->firstname).' '.ucfirst($getuserdata->lastname), 'lsv-plugin' ).'</h5>';
+			$output .= '</div>';
+			$output .= '<div class="lsvlogout"><p><a href="?logout=true">Log out</a></p></div>';
+			$output .= '</div>';
+			$output .= '</div>';
+			$output .= '</section>';
+
+			$output .= ob_get_clean();
+			return $output;
+		}else{
+			wp_safe_redirect( home_url($this->get_post_slug(get_option( "lsvlogin_page" ))) );
+		}
+	}
 	/**
 	 * Register the stylesheets for the public-facing side of the site.
 	 *
@@ -69,10 +122,14 @@ class Lsv_Login_Public {
 	 */
 	public function enqueue_styles() {
 		if(is_page($this->get_post_slug(get_option( "lsvlogin_page"))) || is_page( 'post' )){
-			wp_enqueue_style( $this->plugin_name.'_login', plugin_dir_url( __FILE__ ) . 'css/lsv-login-display.css', array(), $this->version, 'all' );
+			wp_enqueue_style( $this->plugin_name.'_login', plugin_dir_url( __FILE__ ) . 'css/lsv-login-display.css', array(), microtime(), 'all' );
 		}
 		if(is_page($this->get_post_slug(get_option( "lsvregister_page"))) || is_page( 'post' )){
-			wp_enqueue_style( $this->plugin_name.'_register', plugin_dir_url( __FILE__ ) . 'css/lsv-register-display.css', array(), $this->version, 'all' );
+			wp_enqueue_style( $this->plugin_name.'_register', plugin_dir_url( __FILE__ ) . 'css/lsv-register-display.css', array(), microtime(), 'all' );
+		}
+		$actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+		if($actual_link === get_option( "lsvredirect_after_login" )){
+			wp_enqueue_style( 'target-page'.'_register', plugin_dir_url( __FILE__ ) . 'css/target-page.css', array(), microtime(), 'all' );
 		}
 	}
 
@@ -83,14 +140,14 @@ class Lsv_Login_Public {
 	 */
 	public function enqueue_scripts() {
 		if(is_page($this->get_post_slug(get_option( "lsvlogin_page"))) || is_page( 'post' )){
-			wp_enqueue_script( $this->plugin_name.'_login', plugin_dir_url( __FILE__ ) . 'js/lsv-login-public.js', array( 'jquery' ), $this->version, false );
+			wp_enqueue_script( $this->plugin_name.'_login', plugin_dir_url( __FILE__ ) . 'js/lsv-login-public.js', array( 'jquery' ), microtime(), false );
 			wp_localize_script($this->plugin_name.'_login', "public_ajax_requ", array(
 				'ajaxurl' => admin_url('admin-ajax.php'),
 				'nonce' => wp_create_nonce('ajax-nonce'),
 			));
 		}
 		if(is_page($this->get_post_slug(get_option( "lsvregister_page"))) || is_page( 'post' )){
-			wp_enqueue_script( $this->plugin_name.'_register', plugin_dir_url( __FILE__ ) . 'js/lsv-register-display.js', array( 'jquery' ), $this->version, false );
+			wp_enqueue_script( $this->plugin_name.'_register', plugin_dir_url( __FILE__ ) . 'js/lsv-register-display.js', array( 'jquery' ), microtime(), false );
 			wp_localize_script($this->plugin_name.'_register', "public_ajax_requ", array(
 				'ajaxurl' => admin_url('admin-ajax.php'),
 				'nonce' => wp_create_nonce('ajax-nonce'),
@@ -136,8 +193,10 @@ class Lsv_Login_Public {
 
 		if(isset($_POST['email'])){
 			if(!empty($_POST['email'])){
+				global $wpdb;
 				$email = sanitize_email( $_POST['email'] );
-				if(get_user_by('email', $email )){
+				$myaccess = $wpdb->get_var("SELECT email FROM {$wpdb->prefix}lsv_user WHERE email = '$email'");
+				if($myaccess){
 					echo json_encode(array("exist" => 'exist'));
 					die;
 				}else{
@@ -172,18 +231,18 @@ class Lsv_Login_Public {
                 die;
             }
 
-			$insert = insert($wpdb->prefix.'lsv_user', 
+			$wpdb->insert($wpdb->prefix.'lsv_user', 
 				array(
 					'firstname'    =>  $firstname,
 					'lastname'    =>  $lastname,
 					'email'     =>  $email,
-					'phone'     =>  $password,
-					'country'          => 'subscriber',
+					'phone'     =>  $phone,
+					'country'          => $country,
 				),
 				array('%s','%s','%s','%d','%s')
 			);
 			
-			if(is_wp_error($insert)){
+			if(is_wp_error($wpdb)){
 				echo json_encode(array("error" => 'error'));
 				die;
 			}
@@ -200,38 +259,32 @@ class Lsv_Login_Public {
 			die ( 'Hey! What are you doing?');
 		}
 
-		if(isset($_POST['email']) && isset($_POST['password'])){
-			global $wpdb;
+		global $wpdb;
+
+		if(isset($_POST['email']) && isset($_POST['participants'])){
 			$email = sanitize_email( $_POST['email'] );
-			$password = sanitize_text_field( $_POST['password'] );
+			$participants = intval( $_POST['participants'] );
+			$myaccess = $wpdb->get_var("SELECT ID FROM {$wpdb->prefix}lsv_user WHERE email = '$email'");
 
-			if ( $user = get_user_by('email', $email ) ) {
-				// check the user's login with their password.
-				if ( wp_check_password( $password, $user->user_pass, $user->ID ) ) {
-					wp_clear_auth_cookie();
-					wp_set_current_user($user->ID);
-					wp_set_auth_cookie($user->ID);
+			if ( $myaccess ) {
 
-					// Storing logs
-					$logtbl = $wpdb->prefix.'lsv_logs';
-					$wpdb->insert($logtbl,array(
-						'user_id'	=> $user->ID,
-						'firstname'	=> get_user_meta( $user->ID, 'first_name', true),
-						'lastname'	=> get_user_meta( $user->ID, 'last_name', true),
-						'phone'	=> get_user_meta( $user->ID, 'phone', true),
-						'email'	=> $email,
-						'country'	=> get_user_meta( $user->ID, 'country', true),
-						'logindate'	=> date('d-m-y'),
-					),array(
-						'%d','%s','%s','%d','%s','%s','%s'
-					));
-
-					echo json_encode(array("success" => get_option( "lsvredirect_after_login" )));
-					die;
-				}else{
-					echo json_encode(array("error" => "Incorrect password!"));
-					die;
+				$logsadd = $wpdb->insert($wpdb->prefix.'lsv_logs',
+					array(
+						'user_id' => $myaccess,
+						'watching_num' => $participants,
+						'logindate' => date('d-m-y'),
+					),array('%d','%d','%s')
+				);
+				
+				if($logsadd){
+					$_SESSION['lsvuid'] = $myaccess;
+					if(isset($_SESSION['lsvuid'])){
+						echo json_encode(array("success" => get_option( "lsvredirect_after_login" )));
+						die;
+					}
 				}
+				echo json_encode(array("error" => "Something was wrong!"));
+				die;
 			}else{
 				echo json_encode(array("error" => "Incorrect email!"));
 				die;

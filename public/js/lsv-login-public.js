@@ -65,6 +65,7 @@ jQuery(function( $ ) {
 					$('#signinbtn').val('Sing In');
 					$('#signinbtn').removeAttr('disabled');
 					$('#email').css('border-color', 'red');
+					$('#participants').css('border-color', 'red');
 					errorsshow(response.error);
 					return false;
 				}
