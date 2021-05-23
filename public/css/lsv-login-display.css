@@ -19,28 +19,28 @@
  }
  
  .wrapper {
-    margin: 0 auto;
-    width: 100%;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
+  margin: 0 auto;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
  
  .container {
-    position: relative;
-    width: 22%;
-    height: auto;
-    height: fit-content;
-    align-self: center;
+   width: 22%;
+  position: relative;
+  height: auto;
+  height: fit-content;
+  align-self: center;
 }
 .login-form{
-    background: #ffffff;
-    box-shadow: 0 0 15px rgb(0 0 0 / 10%);
-    border-radius: 3px;
-    padding: 22px;
+  background: #ffffff;
+  box-shadow: 0 0 15px rgb(0 0 0 / 10%);
+  border-radius: 3px;
+  padding: 22px;
 }
 .login-form h2 {
   font-size: 20px;
@@ -121,22 +121,6 @@
    transform: scaleY(1.01);
    border-radius: 4px 4px;
    box-shadow: inset 1px -3px 11px -3px #204c22;
- }
- 
- @media(max-width: 575.98px) {
-   .container {
-     flex-direction: column;
-     box-shadow: none;
-   }
- 
-   .col-left,
-   .col-right {
-     width: 100%;
-     margin: 0;
-     padding: 30px;
-     -webkit-clip-path: none;
-     clip-path: none;
-   }
  }
  
  .login-text {
@@ -225,3 +209,14 @@
     color: #f19d49;
     background: #f5a94936;
  }
+
+ @media screen and (min-width : 220px) and (max-width : 668px){
+  .container{
+    width: 90%;
+  }
+}
+@media screen and (min-width : 668px) and (max-width : 1024px) {
+  .container{
+    width: 45%;
+  }
+}

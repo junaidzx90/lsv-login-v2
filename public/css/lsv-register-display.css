@@ -120,21 +120,6 @@ h2 img {
   box-shadow: inset 1px -3px 11px -3px #5f3e1d;
 }
 
-@media(max-width: 575.98px) {
-  .container {
-    flex-direction: column;
-    box-shadow: none;
-  }
-
-  .col-left,
-  .col-right {
-    width: 100%;
-    margin: 0;
-    padding: 30px;
-    -webkit-clip-path: none;
-    clip-path: none;
-  }
-}
 
 .login-text {
   position: relative;
@@ -234,4 +219,26 @@ h2 img {
 .login-form input.btn:hover {
   color: #f19d49;
   background: #ffffff;
+}
+
+@media screen and (min-width : 220px) and (max-width : 668px) {
+  .container {
+    flex-direction: column;
+    box-shadow: none;
+    width: 90%;
+  }
+
+  .col-left,
+  .col-right {
+    width: 100%;
+    margin: 0;
+    padding: 30px;
+    -webkit-clip-path: none;
+    clip-path: none;
+  }
+}
+@media screen and (min-width : 668px) and (max-width : 980px) {
+  .container {
+    width: 85%;
+  }
 }
