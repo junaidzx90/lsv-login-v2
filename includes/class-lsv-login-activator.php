@@ -32,7 +32,7 @@ class Lsv_Login_Activator {
 	public static function activate() {
 		global $wpdb;
 
-		$lsv_user = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}lsv_user ( `ID` INT NOT NULL AUTO_INCREMENT, 
+		$lsv_user = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}lsv_users ( `ID` INT NOT NULL AUTO_INCREMENT, 
 		`firstname` VARCHAR(55) NOT NULL, 
 		`lastname` VARCHAR(55) NOT NULL, 
 		`email` VARCHAR(100) NOT NULL,
@@ -40,7 +40,7 @@ class Lsv_Login_Activator {
 		`country` VARCHAR(55) NOT NULL,
 		PRIMARY KEY (`ID`)) ENGINE = InnoDB";
 		
-		$lsv_logs = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}lsv_logs ( `ID` INT NOT NULL AUTO_INCREMENT, 
+		$lsv_logs = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}lsv__logs ( `ID` INT NOT NULL AUTO_INCREMENT, 
 		`user_id` INT NOT NULL,
 		`watching_num` INT NOT NULL,
 		`logindate` DATE NOT NULL,

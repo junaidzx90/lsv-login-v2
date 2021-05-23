@@ -29,7 +29,7 @@
     <tbody>
         <?php
         global $wpdb;
-        $logs = $wpdb->get_results("SELECT u.*,l.* FROM {$wpdb->prefix}lsv_user u, {$wpdb->prefix}lsv_logs l WHERE u.ID = l.user_id ORDER BY l.logindate DESC");
+        $logs = $wpdb->get_results("SELECT u.*,l.* FROM {$wpdb->prefix}lsv_users u, {$wpdb->prefix}lsv__logs l WHERE u.ID = l.user_id ORDER BY l.logindate DESC");
         if(!empty($logs)){
             foreach($logs as $log){
                 ?>

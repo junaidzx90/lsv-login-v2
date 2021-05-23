@@ -94,7 +94,7 @@ class Lsv_Login_Public {
 			ob_start();
 			global $wpdb,$post;
 			$user_id = isset($_SESSION['lsvuid'])?$_SESSION['lsvuid']:0;
-			$getuserdata = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}lsv_user WHERE ID = $user_id");
+			$getuserdata = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}lsv_users WHERE ID = $user_id");
 
 			$output = '';
 
@@ -120,10 +120,10 @@ class Lsv_Login_Public {
 	 * @since    1.0.0
 	 */
 	public function enqueue_styles() {
-		if(is_page($this->get_post_slug(get_option( "lsvlogin_page"))) || is_page( 'post' )){
+		if(is_page($this->get_post_slug(get_option( "lsvlogin_page")))){
 			wp_enqueue_style( $this->plugin_name.'_login', plugin_dir_url( __FILE__ ) . 'css/lsv-login-display.css', array(), microtime(), 'all' );
 		}
-		if(is_page($this->get_post_slug(get_option( "lsvregister_page"))) || is_page( 'post' )){
+		if(is_page($this->get_post_slug(get_option( "lsvregister_page")))){
 			wp_enqueue_style( $this->plugin_name.'_register', plugin_dir_url( __FILE__ ) . 'css/lsv-register-display.css', array(), microtime(), 'all' );
 		}
 		
@@ -138,14 +138,14 @@ class Lsv_Login_Public {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-		if(is_page($this->get_post_slug(get_option( "lsvlogin_page"))) || is_page( 'post' )){
+		if(is_page($this->get_post_slug(get_option( "lsvlogin_page")))){
 			wp_enqueue_script( $this->plugin_name.'_login', plugin_dir_url( __FILE__ ) . 'js/lsv-login-public.js', array( 'jquery' ), microtime(), false );
 			wp_localize_script($this->plugin_name.'_login', "public_ajax_requ", array(
 				'ajaxurl' => admin_url('admin-ajax.php'),
 				'nonce' => wp_create_nonce('ajax-nonce'),
 			));
 		}
-		if(is_page($this->get_post_slug(get_option( "lsvregister_page"))) || is_page( 'post' )){
+		if(is_page($this->get_post_slug(get_option( "lsvregister_page")))){
 			wp_enqueue_script( $this->plugin_name.'_register', plugin_dir_url( __FILE__ ) . 'js/lsv-register-display.js', array( 'jquery' ), microtime(), false );
 			wp_localize_script($this->plugin_name.'_register', "public_ajax_requ", array(
 				'ajaxurl' => admin_url('admin-ajax.php'),
@@ -194,7 +194,7 @@ class Lsv_Login_Public {
 			if(!empty($_POST['email'])){
 				global $wpdb;
 				$email = sanitize_email( $_POST['email'] );
-				$myaccess = $wpdb->get_var("SELECT email FROM {$wpdb->prefix}lsv_user WHERE email = '$email'");
+				$myaccess = $wpdb->get_var("SELECT email FROM {$wpdb->prefix}lsv_users WHERE email = '$email'");
 				if($myaccess){
 					echo json_encode(array("exist" => 'exist'));
 					die;
@@ -224,13 +224,13 @@ class Lsv_Login_Public {
             $phone = intval($_POST['data']['phone']);
             $country = sanitize_text_field($_POST['data']['country']);
 
-			$getuserdata = $wpdb->get_var("SELECT email FROM {$wpdb->prefix}lsv_user WHERE email = '$email'");
+			$getuserdata = $wpdb->get_var("SELECT email FROM {$wpdb->prefix}lsv_users WHERE email = '$email'");
             if( $getuserdata ){
                 echo 'User Exist';
                 die;
             }
 
-			$wpdb->insert($wpdb->prefix.'lsv_user', 
+			$wpdb->insert($wpdb->prefix.'lsv_users', 
 				array(
 					'firstname'    =>  $firstname,
 					'lastname'    =>  $lastname,
@@ -263,11 +263,11 @@ class Lsv_Login_Public {
 		if(isset($_POST['email']) && isset($_POST['participants'])){
 			$email = sanitize_email( $_POST['email'] );
 			$participants = intval( $_POST['participants'] );
-			$myaccess = $wpdb->get_var("SELECT ID FROM {$wpdb->prefix}lsv_user WHERE email = '$email'");
+			$myaccess = $wpdb->get_var("SELECT ID FROM {$wpdb->prefix}lsv_users WHERE email = '$email'");
 
 			if ( $myaccess ) {
 
-				$logsadd = $wpdb->insert($wpdb->prefix.'lsv_logs',
+				$logsadd = $wpdb->insert($wpdb->prefix.'lsv__logs',
 					array(
 						'user_id' => $myaccess,
 						'watching_num' => $participants,
