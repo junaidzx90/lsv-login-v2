@@ -83,6 +83,7 @@ class Lsv_Login_Public {
 		if(isset($_GET['logout'])){
 			if($_GET['logout'] == 'true'){
 				unset($_SESSION['lsvuid']);
+				session_destroy();
 				wp_safe_redirect( home_url($this->get_post_slug(get_option( "lsvlogin_page" ))) );
 			}
 		}
