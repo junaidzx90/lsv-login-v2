@@ -16,10 +16,14 @@ jQuery(function( $ ) {
 
 	// Error shoing
 	function errorsshow(txt) {
-		$('.signinbtn').append('<span class="errors">'+txt+'</span>');
+		$('.errors').remove();
+		$('.logincontainer').append('<span class="errors">' + txt + '</span>');
+		if ($('.errors').text() == 'Email is required') {
+			$('.errors').css('top','-40px')
+		}
 		setTimeout(() => {
 			$('.errors').remove();
-		}, 1500);
+		}, 10000);
 	}
 
 	$('#signinbtn').on("click", function (e) {
@@ -41,7 +45,7 @@ jQuery(function( $ ) {
 
 		if (!isEmail(email)) {
 			$('#email').css('border-color', 'red');
-			errorsshow('Invalid Email');
+			errorsshow('Use your correct email address to be able to login in.');
 			return false;
 		}
 
@@ -62,7 +66,7 @@ jQuery(function( $ ) {
 			success: function (response) {
 				if (response.error) {
 					access = false;
-					$('#signinbtn').val('Sing In');
+					$('#signinbtn').val('Watch Now');
 					$('#signinbtn').removeAttr('disabled');
 					$('#email').css('border-color', 'red');
 					$('#participants').css('border-color', 'red');

@@ -33,7 +33,7 @@ if(isset($_SESSION['lsvuid'])){
 
     ?>
     <div class="wrapper" style="background-image: linear-gradient(45deg, #292929, #f19d4947),url(<?php echo get_option('lsvbackground_img'); ?>)">
-    <div class="container">
+    <div class="logincontainer">
         <div class="login-form">
             <h2>Login to Watch</h2>
             <form>
@@ -42,8 +42,8 @@ if(isset($_SESSION['lsvuid'])){
                     <input id="email" type="email" placeholder="Email" required>
                 </p>
                 <p>
-                    <label for="Participants">No of Watching with you</label>
-                    <input id="participants" type="number" class="participants" placeholder="Number" required>
+                    <label for="Participants">Number of Participants</label>
+                    <input id="participants" type="number" class="participants" placeholder="Number of Participants" required>
                 </p>
                 <p class="signinbtn">
                     <input id="signinbtn" class="btn" type="submit" value="Watch Now" />

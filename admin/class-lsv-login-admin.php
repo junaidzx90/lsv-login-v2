@@ -152,7 +152,7 @@ class Lsv_Login_Admin {
 	// Registration page
     public function lsvregister_page_cb()
     {
-        global $wp_query;
+        global $post;
         $args = array(
             'post_type' => 'page',
             'post_status' => 'publish',

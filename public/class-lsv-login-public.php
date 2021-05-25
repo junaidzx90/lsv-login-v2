@@ -285,7 +285,7 @@ class Lsv_Login_Public {
 				echo json_encode(array("error" => "Something was wrong!"));
 				die;
 			}else{
-				echo json_encode(array("error" => "Incorrect email!"));
+				echo json_encode(array("error" => "Unknown Details. Use your correct email address to be able to login in."));
 				die;
 			}
 			die;

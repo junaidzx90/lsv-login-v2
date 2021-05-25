@@ -29,12 +29,13 @@
   background-repeat: no-repeat;
 }
  
- .container {
-   width: 22%;
+ .logincontainer {
+  width: 25%;
   position: relative;
   height: auto;
   height: fit-content;
   align-self: center;
+  position: relative;
 }
 .login-form{
   background: #ffffff;
@@ -97,17 +98,14 @@
    padding: 45px 35px;
    display: flex;
  }
-.signinbtn{
-    position: relative;
-}
-.errors {
-    position: absolute;
-    left: 0;
-    bottom: -39px;
-    background-color: #f14949;
-    padding: 5px 10px;
-    border-radius: 3px;
-    color: #ffffff;
+ .errors {
+  position: absolute;
+  left: 0;
+  top: -64px;
+  background-color: #ff000073;
+  padding: 5px 10px;
+  border-radius: 3px;
+  color: #ffffff;
 }
 .login-form input:focus,.login-form select:focus,.login-form input:valid,.login-form select:valid {
     border-color: #f19d49;
@@ -151,7 +149,8 @@
    float: right;
  }
  p.signinbtn {
-    margin-bottom: 10px;
+  margin-top: 20px !important;
+  margin-bottom: 10px !important;
 }
  .login-form label {
    display: block;
@@ -211,12 +210,12 @@
  }
 
  @media screen and (min-width : 220px) and (max-width : 668px){
-  .container{
+  .logincontainer{
     width: 90%;
   }
 }
 @media screen and (min-width : 668px) and (max-width : 1024px) {
-  .container{
+  .logincontainer{
     width: 45%;
   }
 }
